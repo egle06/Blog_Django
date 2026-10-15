@@ -28,30 +28,42 @@ Ruta -> Vista -> Template -> Estático
 ## Estructura del proyecto
 
 ```
-blog_django/
+Django_Blog/
+├── .vscode/                 # configuración del editor (del módulo anterior)
+├── .gitignore
 ├── manage.py
 ├── README.md
 ├── requirements.txt
 ├── blog_project/
+│   ├── __init__.py
+│   ├── asgi.py
 │   ├── settings.py
 │   ├── urls.py
-│   └── ...
+│   └── wsgi.py
 └── posts/
-    ├── views.py
-    ├── urls.py
+    ├── migrations/
+    ├── static/
+    │   └── posts/
+    │       ├── css/estilos.css
+    │       ├── img/logo.jpg
+    │       └── js/main.js
     ├── templates/
     │   └── posts/
-    │       ├── base.html
-    │       ├── inicio.html
     │       ├── acerca.html
-    │       ├── lista_posts.html
-    │       └── detalle_post.html
-    └── static/
-        └── posts/
-            ├── css/estilos.css
-            ├── js/main.js
-            └── img/logo.jpg
+    │       ├── base.html
+    │       ├── detalle_post.html
+    │       ├── inicio.html
+    │       └── lista_posts.html
+    ├── __init__.py
+    ├── admin.py
+    ├── apps.py
+    ├── models.py
+    ├── tests.py
+    ├── urls.py
+    └── views.py
 ```
+
+> Las carpetas `venv/` y `__pycache__/` y el archivo `db.sqlite3` existen en el entorno local, pero están en el `.gitignore` y no se suben al repositorio.
 
 ## Rutas
 
@@ -66,8 +78,8 @@ blog_django/
 
 1. Clonar el repositorio:
    ```
-   git clone https://github.com/egle06/Blog_Django.git
-   cd Blog_Django
+    git clone https://github.com/egle06/Blog_Django.git
+    cd Blog_Django
    ```
 2. Crear y activar el entorno virtual:
    - Windows: `python -m venv venv` y luego `venv\Scripts\activate`
