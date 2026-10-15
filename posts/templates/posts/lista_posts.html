@@ -1,0 +1,16 @@
+{% extends 'posts/base.html' %}
+
+{% block content %}
+    <section>
+        <h1>Posts del blog</h1>
+
+        <ul class="lista-posts">
+            {% for post in posts %}
+                <li>
+                    <a href="{% url 'detalle_post' post.id %}">{{ post.titulo }}</a>
+                    <span class="autor">por {{ post.autor }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
+{% endblock %}
