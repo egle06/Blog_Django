@@ -1,7 +1,7 @@
 from django.http import Http404
 from django.shortcuts import render
 
-Posts = [
+POSTS = [
     {"id": 1, "titulo": "Mi primer post", "autor": "Ana",
      "contenido": "Contenido del primer post."},
     {"id": 2, "titulo": "Aprendiendo Django", "autor": "Luis",
@@ -20,11 +20,11 @@ def acerca(request):
 
 
 def lista_posts(request):
-    return render(request, 'posts/lista_posts.html', {"posts": Posts})
+    return render(request, 'posts/lista_posts.html', {"posts": POSTS})
 
 
 def detalle_post(request, post_id):
-    for post in Posts:
+    for post in POSTS:
         if post["id"] == post_id:
             return render(request, 'posts/detalle_post.html', {"post": post})
     raise Http404("El post no existe")
