@@ -1,6 +1,8 @@
 from django.http import Http404
 from django.shortcuts import render
 
+from .models import Post
+
 POSTS = [
     {"id": 1, "titulo": "Mi primer post", "autor": "Ana",
      "contenido": "Contenido del primer post."},
@@ -20,7 +22,11 @@ def acerca(request):
 
 
 def lista_posts(request):
-    return render(request, 'posts/lista_posts.html', {"posts": POSTS})
+    posts = Post.objects.filter(estado="publicado").order_by("-fecha_creacion")
+    context = {
+        "posts": posts,
+    }
+    return render(request, 'posts/lista_posts.html', context)
 
 
 def detalle_post(request, post_id):

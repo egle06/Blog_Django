@@ -1,16 +1,34 @@
-{% extends 'posts/base.html' %}
+{% extends "posts/base.html" %}
 
 {% block content %}
-    <section>
-        <h1>Posts del blog</h1>
+<header class="blog-hero">
+    <p class="blog-hero__eyebrow">Blog</p>
+    <h1 class="blog-hero__title">Últimas publicaciones</h1>
+    <p class="blog-hero__sub">Ideas, aprendizajes y notas sobre lo que voy descubriendo.</p>
+</header>
 
-        <ul class="lista-posts">
-            {% for post in posts %}
-                <li>
-                    <a href="{% url 'detalle_post' post.id %}">{{ post.titulo }}</a>
-                    <span class="autor">por {{ post.autor }}</span>
-                </li>
-            {% endfor %}
-        </ul>
-    </section>
+<section class="blog-grid">
+    {% for post in posts %}
+        <article class="blog-card">
+            <span class="blog-card__num">{{ forloop.counter|stringformat:"02d" }}</span>
+
+            <div class="blog-card__meta">
+                <span class="blog-badge blog-badge--{{ post.estado }}">{{ post.get_estado_display }}</span>
+                <time datetime="{{ post.fecha_creacion|date:'Y-m-d' }}">
+                    {{ post.fecha_creacion|date:"d/m/Y" }}
+                </time>
+            </div>
+
+            <h2 class="blog-card__title">{{ post.titulo }}</h2>
+            <p class="blog-card__text">{{ post.contenido|truncatewords:40 }}</p>
+
+            <footer class="blog-card__footer">
+                <span class="blog-avatar">{{ post.autor|slice:":1"|upper }}</span>
+                <span class="blog-card__author">Por {{ post.autor }}</span>
+            </footer>
+        </article>
+    {% empty %}
+        <p class="blog-empty">Todavía no hay posts publicados.</p>
+    {% endfor %}
+</section>
 {% endblock %}

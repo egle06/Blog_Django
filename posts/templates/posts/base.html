@@ -19,6 +19,10 @@
     </header>
 
     <main class="site-main">
+        {% if request.resolver_match.url_name != 'inicio' %}
+            <a href="{% url 'inicio' %}" class="volver-inicio">← Volver al inicio</a>
+        {% endif %}
+
         {% block content %}
         {% endblock %}
     </main>
