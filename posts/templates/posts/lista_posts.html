@@ -5,12 +5,17 @@
     <p class="blog-hero__eyebrow">Blog</p>
     <h1 class="blog-hero__title">Últimas publicaciones</h1>
     <p class="blog-hero__sub">Ideas, aprendizajes y notas sobre lo que voy descubriendo.</p>
+    <a href="{% url 'crear_post' %}">+ Crear post</a>
 </header>
 
 <section class="blog-grid">
     {% for post in posts %}
         <article class="blog-card">
             <span class="blog-card__num">{{ forloop.counter|stringformat:"02d" }}</span>
+
+            {% if post.imagen %}
+                <img class="blog-card__img" src="{{ post.imagen.url }}" alt="{{ post.titulo }}">
+            {% endif %}
 
             <div class="blog-card__meta">
                 <span class="blog-badge blog-badge--{{ post.estado }}">{{ post.get_estado_display }}</span>
@@ -19,12 +24,16 @@
                 </time>
             </div>
 
-            <h2 class="blog-card__title">{{ post.titulo }}</h2>
+            <h2 class="blog-card__title">
+                <a href="{% url 'detalle_post' post.slug %}">{{ post.titulo }}</a>
+            </h2>
             <p class="blog-card__text">{{ post.contenido|truncatewords:40 }}</p>
 
             <footer class="blog-card__footer">
                 <span class="blog-avatar">{{ post.autor|slice:":1"|upper }}</span>
                 <span class="blog-card__author">Por {{ post.autor }}</span>
+                <a href="{% url 'editar_post' post.slug %}">Editar</a>
+                <a href="{% url 'eliminar_post' post.slug %}">Eliminar</a>
             </footer>
         </article>
     {% empty %}

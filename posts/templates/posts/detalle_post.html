@@ -1,11 +1,37 @@
-{% extends 'posts/base.html' %}
+{% extends "posts/base.html" %}
 
 {% block content %}
-    <article class="detalle-post">
-        <h1>{{ post.titulo }}</h1>
-        <p class="autor"><strong>Autor:</strong> {{ post.autor }}</p>
-        <p>{{ post.contenido }}</p>
+<article class="post-detalle">
 
-        <a href="{% url 'lista_posts' %}">&larr; Volver al listado</a>
-    </article>
+    {% if post.imagen %}
+        <img class="post-detalle__img" src="{{ post.imagen.url }}" alt="{{ post.titulo }}">
+    {% endif %}
+
+    <div class="post-detalle__body">
+        <div class="post-detalle__meta">
+            <span class="blog-badge blog-badge--{{ post.estado }}">{{ post.get_estado_display }}</span>
+            <time datetime="{{ post.fecha_creacion|date:'Y-m-d' }}">
+                {{ post.fecha_creacion|date:"d/m/Y" }}
+            </time>
+        </div>
+
+        <h1 class="post-detalle__title">{{ post.titulo }}</h1>
+
+        <div class="post-detalle__author">
+            <span class="blog-avatar">{{ post.autor|slice:":1"|upper }}</span>
+            <span>Por <strong>{{ post.autor }}</strong></span>
+        </div>
+
+        <div class="post-detalle__content">
+            {{ post.contenido|linebreaks }}
+        </div>
+
+        <div class="post-detalle__actions">
+            <a class="btn btn--primary" href="{% url 'editar_post' post.slug %}">Editar</a>
+            <a class="btn btn--danger" href="{% url 'eliminar_post' post.slug %}">Eliminar</a>
+            <a class="btn btn--ghost" href="{% url 'lista_posts' %}">← Volver al listado</a>
+        </div>
+    </div>
+
+</article>
 {% endblock %}
