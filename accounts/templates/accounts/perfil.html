@@ -1,0 +1,37 @@
+{% extends "posts/base.html" %}
+
+{% block content %}
+<section class="perfil">
+    <h1>Mi perfil</h1>
+
+    <div class="perfil__card">
+        {% if perfil.avatar %}
+            <img class="perfil__avatar" src="{{ perfil.avatar.url }}" alt="Avatar de {{ user.username }}">
+        {% else %}
+            <div class="perfil__avatar perfil__avatar--vacio">{{ user.username|slice:":1"|upper }}</div>
+        {% endif %}
+
+        <div class="perfil__datos">
+            <h2 class="perfil__nombre">{{ user.username }}</h2>
+
+            {% if user.email %}
+                <p class="perfil__dato"><strong>Email:</strong> {{ user.email }}</p>
+            {% endif %}
+
+            <p class="perfil__dato">
+                <strong>Biografía:</strong>
+                {% if perfil.biografia %}{{ perfil.biografia }}{% else %}Todavía no escribiste tu biografía.{% endif %}
+            </p>
+
+            {% if perfil.link_web %}
+                <p class="perfil__dato"><strong>Sitio web:</strong>
+                    <a href="{{ perfil.link_web }}" target="_blank" rel="noopener">{{ perfil.link_web }}</a>
+                </p>
+            {% endif %}
+        </div>
+    </div>
+    <a class="btn btn--primary" href="{% url 'editar_perfil' %}">Editar perfil</a>
+    <a class="btn btn--ghost" href="{% url 'password_change' %}">Cambiar contraseña</a>
+    <a class="btn btn--ghost" href="{% url 'lista_posts' %}">← Volver al listado</a>
+</section>
+{% endblock %}

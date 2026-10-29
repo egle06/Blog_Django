@@ -5,7 +5,9 @@
     <p class="blog-hero__eyebrow">Blog</p>
     <h1 class="blog-hero__title">Últimas publicaciones</h1>
     <p class="blog-hero__sub">Ideas, aprendizajes y notas sobre lo que voy descubriendo.</p>
-    <a href="{% url 'crear_post' %}">+ Crear post</a>
+    {% if user.is_authenticated %}
+        <a href="{% url 'crear_post' %}">+ Crear post</a>
+    {% endif %}
 </header>
 
 <section class="blog-grid">
@@ -30,10 +32,12 @@
             <p class="blog-card__text">{{ post.contenido|truncatewords:40 }}</p>
 
             <footer class="blog-card__footer">
-                <span class="blog-avatar">{{ post.autor|slice:":1"|upper }}</span>
-                <span class="blog-card__author">Por {{ post.autor }}</span>
-                <a href="{% url 'editar_post' post.slug %}">Editar</a>
-                <a href="{% url 'eliminar_post' post.slug %}">Eliminar</a>
+                <span class="blog-avatar">{{ post.autor.username|slice:":1"|upper }}</span>
+                <span class="blog-card__author">Por {{ post.autor.username }}</span>
+                {% if user == post.autor %}
+                    <a href="{% url 'editar_post' post.slug %}">Editar</a>
+                    <a href="{% url 'eliminar_post' post.slug %}">Eliminar</a>
+                {% endif %}
             </footer>
         </article>
     {% empty %}

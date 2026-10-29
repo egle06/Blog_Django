@@ -1,0 +1,21 @@
+{% extends "posts/base.html" %}
+
+{% block content %}
+    <h1>Crear cuenta</h1>
+
+    <form method="post">
+        {% csrf_token %}
+
+        {% if form.errors %}
+            <div>
+                <p>Revisá los datos ingresados:</p>
+                {{ form.errors }}
+            </div>
+        {% endif %}
+
+        {{ form.as_p }}
+
+        <button type="submit" class="btn btn--primary">Registrarme</button>
+        <a class="btn btn--ghost" href="{% url 'lista_posts' %}">Cancelar</a>
+    </form>
+{% endblock %}
