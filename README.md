@@ -43,21 +43,25 @@ Con estos pasos se reconstruye el proyecto desde cero, sin necesidad de `db.sqli
    pip install -r requirements.txt
    ```
 
-4. **Configurar las variables de entorno.** Copiar el archivo de ejemplo y completar los valores:
+4. **Crear el archivo de variables de entorno.** El proyecto lee su configuración desde un archivo `.env`, que no está en el repositorio. Se crea copiando el archivo de ejemplo:
    - Windows: `copy .env.example .env`
    - Mac/Linux: `cp .env.example .env`
 
-   El archivo `.env` necesita estas variables:
+   Con solo ese comando alcanza para ejecutar el proyecto en modo desarrollo: no hace falta editar nada.
 
-   | Variable     | Descripción                                                    |
-   |--------------|----------------------------------------------------------------|
-   | `SECRET_KEY` | Clave secreta de Django. Usar un valor propio, no compartirlo. |
-   | `DEBUG`      | `True` en desarrollo, `False` en producción.                   |
+   El archivo `.env` contiene estas variables:
 
-   Para generar una clave secreta nueva:
-   ```
-   python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
-   ```
+   | Variable     | Descripción                                     | Valor en el ejemplo              |
+   |--------------|-------------------------------------------------|----------------------------------|
+   | `SECRET_KEY` | Clave secreta de Django.                        | `colocar-una-clave-secreta`      |
+   | `DEBUG`      | `True` en desarrollo, `False` en producción.    | `True`                           |
+
+   > **Opcional:** el valor de ejemplo de `SECRET_KEY` sirve para probar el proyecto en local. Para un uso real, conviene reemplazarlo por una clave propia y no compartirla. Se puede generar una con:
+   > ```
+   > python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
+   > ```
+   > y pegarla en el `.env` después de `SECRET_KEY=`.
+
    El archivo `.env` está en el `.gitignore` y **no se sube al repositorio**. Solo se incluye `.env.example`, sin valores reales.
 
 5. **Aplicar las migraciones** (crea la base de datos SQLite con las tablas de `Post`, `Perfil`, usuarios, etc.):
