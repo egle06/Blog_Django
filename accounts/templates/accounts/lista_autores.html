@@ -1,0 +1,41 @@
+{% extends "posts/base.html" %}
+
+{% block content %}
+<h1>Autores</h1>
+
+<form method="get" class="autores-buscar">
+    <input type="text" name="q" value="{{ busqueda|default:'' }}" placeholder="Buscar autor...">
+    <button type="submit" class="btn btn--ghost">Buscar</button>
+    {% if busqueda %}
+        <a class="btn btn--ghost" href="{% url 'lista_autores' %}">Limpiar</a>
+    {% endif %}
+</form>
+
+<div class="autores-lista">
+    {% for autor in autores %}
+        <a class="autor-card" href="{% url 'perfil_publico' autor.username %}">
+            {% if autor.perfil.avatar %}
+                <img class="autor-card__avatar" src="{{ autor.perfil.avatar.url }}" alt="">
+            {% else %}
+                <span class="autor-card__avatar autor-card__avatar--vacio">{{ autor.username|slice:":1"|upper }}</span>
+            {% endif %}
+
+            <div class="autor-card__info">
+                <strong>{{ autor.username }}</strong>
+                <span class="autor-card__posts">
+                    {{ autor.total_posts }} post{{ autor.total_posts|pluralize }}
+                </span>
+                {% if autor.perfil.biografia %}
+                    <p>{{ autor.perfil.biografia|truncatewords:20 }}</p>
+                {% endif %}
+            </div>
+        </a>
+    {% empty %}
+        <p class="blog-empty">
+            No se encontraron autores{% if busqueda %} para "{{ busqueda }}"{% endif %}.
+            <br>
+            <a href="{% url 'lista_autores' %}">Ver todos los autores</a>
+        </p>
+    {% endfor %}
+</div>
+{% endblock %}

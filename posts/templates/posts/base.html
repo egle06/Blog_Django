@@ -20,6 +20,7 @@
                 <a href="{% url 'inicio' %}" {% if current == 'inicio' %}class="is-active"{% endif %}>Inicio</a>
                 <a href="{% url 'acerca' %}" {% if current == 'acerca' %}class="is-active"{% endif %}>Acerca de</a>
                 <a href="{% url 'lista_posts' %}" {% if current == 'lista_posts' or current == 'detalle_post' %}class="is-active"{% endif %}>Posts</a>
+                <a href="{% url 'lista_autores' %}" {% if current == 'lista_autores' or current == 'perfil_publico' %}class="is-active"{% endif %}>Autores</a>
             </div>
 
             <div class="site-nav__user">

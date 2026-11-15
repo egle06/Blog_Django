@@ -2,9 +2,14 @@ from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-
+from django.contrib.auth import get_user_model
+from django.db.models import Count
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import RegistroUsuarioForm, UsuarioForm, PerfilForm
 from .models import Perfil
+
+User = get_user_model()
+
 
 
 def registro(request):
@@ -48,4 +53,32 @@ def editar_perfil(request):
     return render(request, "accounts/editar_perfil.html", {
         "usuario_form": usuario_form,
         "perfil_form": perfil_form,
+    })
+
+def lista_autores(request):
+    autores = (
+        User.objects.select_related("perfil")
+        .annotate(total_posts=Count("posts"))
+        .order_by("username")
+    )
+
+    busqueda = request.GET.get("q")
+    if busqueda:
+        autores = autores.filter(username__icontains=busqueda)
+
+    return render(request, "accounts/lista_autores.html", {
+        "autores": autores,
+        "busqueda": busqueda,
+    })
+
+
+def perfil_publico(request, username):
+    autor = get_object_or_404(User, username=username)
+    perfil, creado = Perfil.objects.get_or_create(user=autor)
+    posts = autor.posts.all()
+
+    return render(request, "accounts/perfil_publico.html", {
+        "autor": autor,
+        "perfil": perfil,
+        "posts": posts,
     })

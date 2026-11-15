@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
+from django.contrib import messages
+from django.db.models import Q
 from .forms import PostForm
 from .models import Post
 
@@ -14,8 +16,31 @@ def acerca(request):
 
 
 def lista_posts(request):
-    posts = Post.objects.all().order_by("-fecha_creacion")
-    return render(request, 'posts/lista_posts.html', {"posts": posts})
+    posts = Post.objects.all()
+
+    busqueda = request.GET.get("q")
+    estado = request.GET.get("estado")
+    orden = request.GET.get("orden", "reciente")
+
+    if busqueda:
+        posts = posts.filter(
+            Q(titulo__icontains=busqueda) |
+            Q(contenido__icontains=busqueda)
+        )
+    if estado:
+        posts = posts.filter(estado=estado)
+    if orden == "antiguo":
+        posts = posts.order_by("fecha_creacion")
+    else:
+        posts = posts.order_by("-fecha_creacion")
+
+    return render(request, 'posts/lista_posts.html', {
+        "posts": posts,
+        "busqueda": busqueda,
+        "estado": estado,
+        "orden": orden,
+        "estados_opciones": Post.ESTADOS,
+    })
 
 
 def detalle_post(request, slug):
@@ -30,6 +55,7 @@ def crear_post(request):
             post = form.save(commit=False)
             post.autor = request.user
             post.save()
+            messages.success(request, 'El post fue creado correctamente.')
             return redirect("detalle_post", slug=post.slug)
     else:
         form = PostForm()
@@ -49,6 +75,7 @@ def editar_post(request, slug):
         form = PostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
             form.save()
+            messages.success(request, 'El post fue actualizado correctamente.')
             return redirect("detalle_post", slug=post.slug)
     else:
         form = PostForm(instance=post)
@@ -68,5 +95,6 @@ def eliminar_post(request, slug):
         return HttpResponseForbidden("No tenés permiso para modificar este post.")
     if request.method == "POST":
         post.delete()
+        messages.success(request, 'El post fue eliminado correctamente.')
         return redirect("lista_posts")
     return render(request, 'posts/post_confirm_delete.html', {"post": post})

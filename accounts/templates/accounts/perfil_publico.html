@@ -1,0 +1,45 @@
+{% extends "posts/base.html" %}
+
+{% block content %}
+<section class="perfil">
+    <div class="perfil__card">
+        {% if perfil.avatar %}
+            <img class="perfil__avatar" src="{{ perfil.avatar.url }}" alt="Avatar de {{ autor.username }}">
+        {% else %}
+            <div class="perfil__avatar perfil__avatar--vacio">{{ autor.username|slice:":1"|upper }}</div>
+        {% endif %}
+
+        <div class="perfil__datos">
+            <h1 class="perfil__nombre">{{ autor.username }}</h1>
+
+            {% if perfil.biografia %}
+                <p class="perfil__dato">{{ perfil.biografia }}</p>
+            {% endif %}
+
+            {% if perfil.link_web %}
+                <p class="perfil__dato">
+                    <a href="{{ perfil.link_web }}" target="_blank" rel="noopener">{{ perfil.link_web }}</a>
+                </p>
+            {% endif %}
+
+            {% if user == autor %}
+                <a class="btn btn--primary" href="{% url 'editar_perfil' %}">Editar perfil</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <h2>Posts de {{ autor.username }}</h2>
+    <ul class="lista-posts">
+        {% for post in posts %}
+            <li>
+                <a href="{% url 'detalle_post' post.slug %}">{{ post.titulo }}</a>
+                <span class="autor">{{ post.fecha_creacion|date:"d/m/Y" }}</span>
+            </li>
+        {% empty %}
+            <li>Todavía no publicó nada.</li>
+        {% endfor %}
+    </ul>
+
+    <a class="btn btn--ghost" href="{% url 'lista_autores' %}">← Volver a autores</a>
+</section>
+{% endblock %}

@@ -6,10 +6,41 @@
     <h1 class="blog-hero__title">Últimas publicaciones</h1>
     <p class="blog-hero__sub">Ideas, aprendizajes y notas sobre lo que voy descubriendo.</p>
     {% if user.is_authenticated %}
-        <a href="{% url 'crear_post' %}">+ Crear post</a>
+        <a href="{% url 'crear_post' %}" class="btn btn--primary">+ Crear post</a>
     {% endif %}
 </header>
+<!-- BARRA DE BÚSQUEDA Y FILTROS -->
+<section class="blog-filters">
+    <form method="GET" action="{% url 'lista_posts' %}" class="blog-filters__form">
+        <input 
+            type="text" 
+            name="q" 
+            class="blog-filters__input" 
+            placeholder="Buscar por título o contenido..." 
+            value="{{ busqueda|default:'' }}"
+        >
 
+        <select name="estado" class="blog-filters__select">
+            <option value="">Todos los estados</option>
+            {% for valor, etiqueta in estados_opciones %}
+                <option value="{{ valor }}" {% if estado == valor %}selected{% endif %}>
+                    {{ etiqueta }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <select name="orden" class="blog-filters__select">
+            <option value="reciente" {% if orden == 'reciente' %}selected{% endif %}>Más recientes</option>
+            <option value="antiguo" {% if orden == 'antiguo' %}selected{% endif %}>Más antiguos</option>
+        </select>
+
+        <button type="submit" class="btn btn--primary">Filtrar</button>
+
+        {% if busqueda or estado or orden == 'antiguo' %}
+            <a href="{% url 'lista_posts' %}" class="btn btn--ghost">Limpiar</a>
+        {% endif %}
+    </form>
+</section>
 <section class="blog-grid">
     {% for post in posts %}
         <article class="blog-card">
@@ -41,7 +72,13 @@
             </footer>
         </article>
     {% empty %}
-        <p class="blog-empty">Todavía no hay posts publicados.</p>
+        {% if busqueda or estado %}
+            <p class="blog-empty">
+                No se encontraron publicaciones{% if busqueda %} para "{{ busqueda }}"{% endif %}.
+            </p>
+        {% else %}
+            <p class="blog-empty">Todavía no hay posts publicados.</p>
+        {% endif %}
     {% endfor %}
 </section>
 {% endblock %}

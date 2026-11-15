@@ -27,4 +27,6 @@ urlpatterns = [
     ),
     name="password_change_done",
     ),
+    path("autores/", views.lista_autores, name="lista_autores"),
+    path("autores/<str:username>/", views.perfil_publico, name="perfil_publico"),
 ]

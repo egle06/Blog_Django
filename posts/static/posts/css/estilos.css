@@ -205,25 +205,6 @@ h1, h2 {
     font-size: 0.95rem;
 }
 
-
-/* =========================================================
-   LISTAS SIMPLES (versión vieja, por si algún template las usa)
-   ========================================================= */
-.lista-posts { list-style: none; padding: 0; }
-
-.lista-posts li {
-    padding: 1rem 0;
-    border-bottom: 1px solid var(--linea);
-}
-
-.lista-posts a { text-decoration: none; font-weight: 600; }
-.lista-posts a:hover { text-decoration: underline; }
-
-.autor { color: var(--gris); font-size: 0.9rem; margin-left: 0.5rem; }
-
-.detalle-post { padding: 1rem 0; }
-
-
 /* =========================================================
    LISTADO DE POSTS
    ========================================================= */
@@ -552,3 +533,87 @@ form input[type="file"] { font-size: 0.9rem; }
 @media (max-width: 520px) {
     .perfil__card { flex-direction: column; align-items: flex-start; }
 }
+/* =========================================================
+    Barra de búsqueda y filtros
+   ========================================================= */
+.blog-filters {
+    max-width: 760px;
+    margin: 0 auto 1.5rem;
+    padding: 0 1.25rem;
+}
+
+.blog-filters__form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.blog-filters__form .blog-filters__input {
+    flex: 1 1 220px;
+    width: auto;
+    font-size: 0.9rem;
+    padding: 0.5rem 0.75rem;
+}
+
+.blog-filters__form .blog-filters__select {
+    flex: 0 1 auto;
+    width: auto;
+    font-size: 0.9rem;
+    padding: 0.5rem 0.75rem;
+}
+
+@media (max-width: 600px) {
+    .blog-filters__form .blog-filters__input,
+    .blog-filters__form .blog-filters__select,
+    .blog-filters__form .btn {
+        width: 100%;
+        flex: 1 1 100%;
+        text-align: center;
+    }
+}
+/* ===== Autores ===== */
+.autores-buscar {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.autores-lista { display: grid; gap: 0; }
+
+.autor-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--linea);
+    text-decoration: none;
+    color: var(--texto);
+}
+
+.autor-card:hover strong { text-decoration: underline; }
+
+.autor-card__avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.autor-card__avatar--vacio {
+    display: grid;
+    place-items: center;
+    background: var(--texto);
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+.autor-card__posts {
+    margin-left: 0.5rem;
+    color: var(--gris);
+    font-size: 0.85rem;
+}
+
+.autor-card__info p { margin: 0.25rem 0 0; color: var(--gris); font-size: 0.92rem; }
